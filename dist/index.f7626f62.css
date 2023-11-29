@@ -216,7 +216,7 @@ body {
   fill: #f38e82;
   width: 6rem;
   height: 6rem;
-  animation: 10s linear infinite rotate;
+  animation: 2s linear infinite rotate;
 }
 
 @keyframes rotate {
