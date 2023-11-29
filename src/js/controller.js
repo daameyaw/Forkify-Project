@@ -5,20 +5,13 @@ import recipeView from './views/recipeView.js';
 
 const recipeContainer = document.querySelector('.recipe');
 
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
-
 // https://forkify-api.herokuapp.com/v2
 
 ///////////////////////////////////////
 
 const controlRecipe = async function () {
   try {
+    //gettting the id from the url
     const id = window.location.hash.slice(1);
     console.log(id);
 
@@ -39,9 +32,12 @@ const controlRecipe = async function () {
   }
 };
 // controlRecipe();
-['hashchange', 'load'].forEach(function (event) {
-  window.addEventListener(event, controlRecipe);
-});
+//where everything starts
+//    ['hashchange', 'load'].forEach(function (event) {
+//  window.addEventListener(event, handler);
 
-// window.addEventListener(showRecipe);
-// window.addEventListener(showRecipe);
+//
+const init = function () {
+  recipeView.addHandlerRender(controlRecipe);
+};
+init();
