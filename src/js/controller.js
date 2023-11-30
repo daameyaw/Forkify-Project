@@ -40,15 +40,14 @@ const controlRecipe = async function () {
 
 const controlSearchResults = async function () {
   try {
-    //1. GET RESULTS FROM SEARCH
+    //1. GET THE QUERY FOR THE SEARCH FORM
     const query = searchView.getQuery();
     if (!query) return;
     console.log(query);
+
+    //2USING THE QUERY,FETCH THE DATA FROM THE API
     await model.loadSearchResults(query);
     console.log(model.state.search.result);
-    model.state.search.result.forEach((result, i) => {
-      console.log(`${i} : ${result.id}`);
-    });
   } catch (error) {
     console.log(error);
   }
