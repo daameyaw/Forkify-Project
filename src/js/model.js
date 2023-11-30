@@ -3,6 +3,9 @@ import { API_URL } from './config.js';
 import { getJSON } from './helpers.js';
 export const state = {
   recipe: {},
+  search: {
+    result: [],
+  },
 };
 
 export const loadRecipe = async function (id) {
@@ -21,6 +24,30 @@ export const loadRecipe = async function (id) {
     };
     console.log(state.recipe);
   } catch (error) {
-    console.error(`${error} helllo `);
+    console.log(`${error}`);
+    throw error;
   }
 };
+
+export const loadSearchResults = async function (query) {
+  try {
+    const data = await getJSON(`${API_URL}?search=${query}`);
+
+    state.search.result = data.data.recipes.map(rec => {
+      return {
+        id: rec.id,
+        title: rec.title,
+        image: rec.image_url,
+        publisher: rec.publisher,
+      };
+    });
+    state.search.result.forEach(function (result, i) {
+      console.log(`${i} : ${result}`);
+    });
+    // console.log(state.search.result);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// loadSearchResults('pizza');
