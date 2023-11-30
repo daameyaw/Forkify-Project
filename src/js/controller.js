@@ -4,13 +4,16 @@ import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import { async } from 'regenerator-runtime';
 import searchView from './views/searchView.js';
+import resultsView from './views/resultsView.js';
 
 const recipeContainer = document.querySelector('.recipe');
 
 // https://forkify-api.herokuapp.com/v2
 
 ///////////////////////////////////////
-
+if (module.hot) {
+  module.hot.accept();
+}
 const controlRecipe = async function () {
   try {
     //gettting the id from the url
@@ -40,6 +43,7 @@ const controlRecipe = async function () {
 
 const controlSearchResults = async function () {
   try {
+    resultsView.renderSpinner();
     //1. GET THE QUERY FOR THE SEARCH FORM
     const query = searchView.getQuery();
     if (!query) return;
@@ -47,7 +51,8 @@ const controlSearchResults = async function () {
 
     //2USING THE QUERY,FETCH THE DATA FROM THE API
     await model.loadSearchResults(query);
-    console.log(model.state.search.result);
+    // console.log(model.state.search.result);
+    resultsView.render(model.getSearchResultsPage(2));
   } catch (error) {
     console.log(error);
   }
