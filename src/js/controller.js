@@ -5,6 +5,7 @@ import recipeView from './views/recipeView.js';
 import { async } from 'regenerator-runtime';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
+import paginationView from './views/paginationView.js';
 
 const recipeContainer = document.querySelector('.recipe');
 
@@ -53,6 +54,8 @@ const controlSearchResults = async function () {
     await model.loadSearchResults(query);
     // console.log(model.state.search.result);
     resultsView.render(model.getSearchResultsPage(2));
+
+    paginationView.render(model.state.search);
   } catch (error) {
     console.log(error);
   }
