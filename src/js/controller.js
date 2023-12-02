@@ -53,7 +53,7 @@ const controlSearchResults = async function () {
     //2USING THE QUERY,FETCH THE DATA FROM THE API
     await model.loadSearchResults(query);
     // console.log(model.state.search.result);
-    resultsView.render(model.getSearchResultsPage(2));
+    resultsView.render(model.getSearchResultsPage());
 
     paginationView.render(model.state.search);
   } catch (error) {
@@ -62,9 +62,17 @@ const controlSearchResults = async function () {
 };
 // controlSearchResults();
 //
+const controlPagination = function (goToPage) {
+  console.log('button');
+
+  resultsView.render(model.getSearchResultsPage(goToPage));
+
+  paginationView.render(model.state.search);
+};
 
 const init = function () {
   recipeView.addHandlerRender(controlRecipe);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerPagination(controlPagination);
 };
 init();
