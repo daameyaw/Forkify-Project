@@ -60,4 +60,10 @@ export const getSearchResultsPage = function (page = state.search.page) {
 
 // loadSearchResults('pizza');
 
-export const updateServings = function (newServings) {};
+export const updateServings = function (newServings) {
+  state.recipe.ingredients.forEach(ing => {
+    ing.quantity = (ing.quantity * newServings) / state.recipe.servings;
+  });
+
+  state.recipe.servings = newServings;
+};
