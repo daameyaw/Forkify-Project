@@ -55,7 +55,7 @@ const controlSearchResults = async function () {
     //2USING THE QUERY,FETCH THE DATA FROM THE API
     await model.loadSearchResults(query);
     // console.log(model.state.search.result);
-    resultsView.render(model.getSearchResultsPage());
+    resultsView.render(model.getSearchResultsPage(1));
 
     paginationView.render(model.state.search);
   } catch (error) {
@@ -81,9 +81,14 @@ const controlServings = function (updateTo) {
   recipeView.update(model.state.recipe);
 };
 
+const controlAddBookmark = function () {
+  model.addBookmark(model.state.recipe);
+  console.log('added', model.state.recipe);
+};
 const init = function () {
   recipeView.addHandlerRender(controlRecipe);
   recipeView.addHandlerUpdateServings(controlServings);
+  recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerPagination(controlPagination);
 };
