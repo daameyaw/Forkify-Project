@@ -599,6 +599,7 @@ const controlRecipe = async function() {
         console.log(id);
         if (!id) return;
         (0, _recipeViewJsDefault.default).renderSpinner();
+        // resultsView.update(model.getSearchResultsPage());
         //1Loading recipe
         await _modelJs.loadRecipe(id);
         console.log(_modelJs.state);
@@ -641,7 +642,8 @@ const controlServings = function(updateTo) {
     //Update the recipe servings(in state)
     _modelJs.updateServings(updateTo);
     //Updating the recipe view
-    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
+    // recipeView.render(model.state.recipe);
+    (0, _recipeViewJsDefault.default).update(_modelJs.state.recipe);
 };
 const init = function() {
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipe);
@@ -2636,7 +2638,7 @@ class RecipeView extends (0, _viewJsDefault.default) {
             const updateTo = +btn.dataset.updateTo;
             console.log(updateTo);
             console.log(btn);
-            handler(updateTo);
+            if (updateTo > 0) handler(updateTo);
         });
     }
     _generateMarkup() {
@@ -2782,6 +2784,23 @@ class View {
     }
     _clear() {
         this._parentElement.innerHTML = "";
+    }
+    update(data) {
+        // if (!data || (Array.isArray(data) && data.length === 0))
+        //   return this.renderError();
+        this._data = data;
+        const newMarkup = this._generateMarkup();
+        const newDom = document.createRange().createContextualFragment(newMarkup);
+        const newElements = Array.from(newDom.querySelectorAll("*"));
+        const curElements = Array.from(this._parentElement.querySelectorAll("*"));
+        // console.log(newElements);
+        // console.log(curElements);
+        newElements.forEach((newEl, i)=>{
+            const curEl = curElements[i];
+            console.log(curEl, newEl.isEqualNode(curEl));
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== "") curEl.textContent = newEl.textContent;
+            if (!newEl.isEqualNode(curEl)) Array.from(newEl.attributes).forEach((attribute)=>curEl.setAttribute(attribute.name, attribute.value));
+        });
     }
     renderSpinner() {
         const markup = ` <div class="spinner">
@@ -3118,8 +3137,9 @@ class ResultsView extends (0, _viewJsDefault.default) {
         return this._data.map(this._generateMarkupPreview).join(" ");
     }
     _generateMarkupPreview(result) {
+        const id = window.location.hash.slice(1);
         return `<li class="preview">
-    <a class="preview__link " href="#${result.id}">
+    <a class="preview__link ${result.id === id ? "preview__link--active" : " "}" href="#${result.id}">
       <figure class="preview__fig">
         <img src="${result.image}" alt="${result.title}" />
       </figure>
