@@ -11,6 +11,7 @@ class RecipeView extends View {
   addHandlerUpdateServings(handler) {
     this._parentElement.addEventListener('click', function (e) {
       const btn = e.target.closest('.btn--update');
+      if (!btn) return;
       const updateTo = +btn.dataset.updateTo;
       console.log(updateTo);
       console.log(btn);
@@ -77,7 +78,9 @@ class RecipeView extends View {
     </div>
     <button class="btn--round btn--bookmark">
       <svg class="">
-        <use href="${icons}#icon-bookmark"></use>
+        <use href="${icons}#icon-bookmark${
+      this._data.bookmarked ? '-fill' : ''
+    }"></use>
       </svg>
     </button>
   </div>
