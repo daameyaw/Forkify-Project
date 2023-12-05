@@ -38,7 +38,7 @@ const controlRecipe = async function () {
     recipeView.render(model.state.recipe);
   } catch (error) {
     recipeView.renderError();
-    // console.error(error.message);
+    console.error(error);
   }
 };
 // controlRecipe();
@@ -87,17 +87,19 @@ const controlAddBookmark = function () {
   if (!model.state.recipe.bookmarked) {
     model.addBookmark(model.state.recipe);
     bookmarksView.render(model.state.bookmarks);
-    console.log('adding', model.state.recipe);
-    console.log(model.state);
   } else {
     model.deleteBookmark(model.state.recipe.id);
-    console.log('removing', model.state.recipe);
-    console.log(model.state);
+    bookmarksView.render(model.state.bookmarks);
   }
 
   recipeView.update(model.state.recipe);
 };
+
+const controlBookmarks = function () {
+  bookmarksView.render(model.state.bookmarks);
+};
 const init = function () {
+  bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipe);
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
