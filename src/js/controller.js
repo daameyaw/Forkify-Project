@@ -101,7 +101,7 @@ const controlBookmarks = function () {
 };
 
 const conntrolAddRecipe = function (newRecipe) {
-  console.log(newRecipe);
+  model.uploadRecipe(newRecipe);
 };
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
