@@ -22,12 +22,12 @@ const createRecipeObject = function (data) {
     servings: recipe.servings,
     cookingTime: recipe.cooking_time,
     ingredients: recipe.ingredients,
-    // ...(recipe.key && { key: recipe.key }),
+    ...(recipe.key && { key: recipe.key }),
   };
 };
 export const loadRecipe = async function (id) {
   try {
-    const data = await getJSON(`${API_URL}/${id}`);
+    const data = await getJSON(`${API_URL}/${id}?key=${KEY}`);
     state.recipe = createRecipeObject(data);
     if (state.bookmarks.some(bookmark => bookmark.id === id)) {
       state.recipe.bookmarked = true;
@@ -43,7 +43,7 @@ export const loadRecipe = async function (id) {
 
 export const loadSearchResults = async function (query) {
   try {
-    const data = await getJSON(`${API_URL}?search=${query}`);
+    const data = await getJSON(`${API_URL}?search=${query}&key=${KEY}`);
 
     state.search.result = data.data.recipes.map(rec => {
       return {
@@ -51,6 +51,7 @@ export const loadSearchResults = async function (query) {
         title: rec.title,
         image: rec.image_url,
         publisher: rec.publisher,
+        ...(rec.key && { key: rec.key }),
       };
     });
     console.log(state.search.result);
@@ -144,7 +145,7 @@ export const uploadRecipe = async function (newRecipe) {
     console.log(data);
     state.recipe = createRecipeObject(data);
     // console.log(data.data.recipe.key);
-    state.recipe.key = data.data.recipe.key;
+    // state.recipe.key = data.data.recipe.key;
     console.log(state.recipe);
     addBookmark(state.recipe);
     // state.recipe.key = 'hello';
